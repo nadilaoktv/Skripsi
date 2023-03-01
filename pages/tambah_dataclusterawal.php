@@ -148,11 +148,11 @@ include "../aksi/koneksi.php"
                                             </div>
                                             <div class="form-group">
                                                 <label>Sembuh <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" name="sembuh" id="sembuh"/>
+                                                <input class="form-control" type="text" name="sembuh" id="sembuh" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Meninggal <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" name="meninggal" id="meninggal"/>
+                                                <input class="form-control" type="text" name="meninggal" id="meninggal" />
                                             </div>
                                             <div class="form-group">
                                                 <button class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Simpan</button>
@@ -193,17 +193,7 @@ include "../aksi/koneksi.php"
         map.attributionControl.setPrefix(false);
 
         var marker = new L.marker(curLocation, {
-            draggable: "true",
-        });
-
-        marker.on('dragend', function(event) {
-            var position = marker.getLatLng();
-            marker.setLatLng(position, {
-                draggable: true,
-            }).bindPopup(position).update();
-            $("#lat").val(position.lat);
-            $("#lng").val(position.lng);
-
+            draggable: "false",
         });
 
         map.addLayer(marker);
