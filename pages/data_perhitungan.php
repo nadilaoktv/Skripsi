@@ -88,7 +88,7 @@ include '../aksi/koneksi.php';
                             <a href="dashboard.php" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="data_covid.php"><i class="fa fa-map" aria-hidden="true"></i> Data Covid-19</a>
+                            <a href="data_perhitungan.php"><i class="fa fa-map" aria-hidden="true"></i>Data perhitungan</a>
                         </li>
                     </ul>
                 </div>
@@ -99,7 +99,7 @@ include '../aksi/koneksi.php';
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Data Covid-19</h1>
+                        <h1 class="page-header">Perhitungan K-means</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -108,42 +108,41 @@ include '../aksi/koneksi.php';
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Tabel Data Covid-19
+                                Tabel K-Means
                             </div>
 
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <a href='tambah_datacovid.php' class='btn btn-success' style="margin-bottom: 10px;">Tambah Data</a>
+                                    <form method="post" action="../aksi/proses_perhitungan_K-means.php" enctype="multipart/form-data">
+                                        <label for="jumlah_cluster">Jumlah Cluster:</label>
+                                        <select name="jumlah_cluster" id="jumlah_cluster">
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <button class='btn btn-success' style="margin-bottom: 10px;" id="submit">Hitung Data</button>
+                                    </form>
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr>
-                                                <!-- <th>ID</th> -->
-                                                <th>Data Ke</th>
+                                                <th>no</th>
                                                 <th>Kecamatan</th>
                                                 <th>Positif</th>
                                                 <th>Sembuh</th>
                                                 <th>Meninggal</th>
-                                                <th colspan="2">Action</th>
                                             </tr>
                                         </thead>
                                         <?php
-                                        $query1 = "SELECT marker.*, covid.* FROM marker, covid WHERE marker.id_marker=covid.id_marker";
+                                        $no = 1;
+                                        $query1 = "SELECT kecamatan,positif,sembuh,meninggal FROM covid LEFT JOIN marker ON covid.id_marker=marker.id_marker";
                                         $sql1 = mysqli_query($koneksi, $query1);
-                                        $index = 1;
                                         while ($row1 = mysqli_fetch_array($sql1)) {
-                                            echo "<tr>
-                                            <td>" . $index . "</td>
+                                            echo "<tr><th>" . $no++ . "</th>
                                             <td>" . $row1['kecamatan'] . "</td>
                                             <td>" . $row1['positif'] . "</td>
                                             <td>" . $row1['sembuh'] . "</td>
-                                            <td>" . $row1['meninggal'] . "</td>
-                                            
-                                            <td width> <a href='http://localhost/skripsi/aksi/proses_deletecovid.php?id_del=" . $row1['id_covid'] . "' class='btn btn-danger'>Delete</a></td>
-                                            <td>
-                                            <a href='http://localhost/skripsi/pages/ubah_datacovid.php?id_edit=" . $row1['id_covid'] . "' class='btn btn-warning'>Edit</a></td>
-</td>";
-                                            $index++;
+                                            <td>" . $row1['meninggal'] . "</td>";
                                         }
                                         ?>
                                     </table>

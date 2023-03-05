@@ -155,7 +155,7 @@ include "../aksi/koneksi.php"
                                                 <input class="form-control" type="text" name="meninggal" id="meninggal" />
                                             </div>
                                             <div class="form-group">
-                                                <button class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Simpan</button>
+                                                <button class="btn btn-primary" id="submit" disabled><span class="glyphicon glyphicon-save"></span> Simpan</button>
                                                 <a class="btn btn-danger" href="data_clusterawal.php"><span class="glyphicon glyphicon-arrow-left"></span> Kembali</a>
                                             </div>
                                         </div>
@@ -204,9 +204,10 @@ include "../aksi/koneksi.php"
             $('#kecamatan').change(function() {
                 var kec = $(this).val();
                 if (kec == "") {
-                    $('#positif').val("ok");
+                    $('#positif').val("");
                     $('#sembuh').val("");
                     $('#meninggal').val("");
+                    $('#submit').attr('disabled',true);
                 } else {
                     $.ajax({
                         url: '../aksi/get_data_cluster.php',
@@ -220,6 +221,7 @@ include "../aksi/koneksi.php"
                                 $('#positif').val(data.positif);
                                 $('#sembuh').val(data.sembuh);
                                 $('#meninggal').val(data.meninggal);
+                                $('#submit').removeAttr('disabled');
                             } else {
                                 $('#positif').val("invalid");
                                 $('#sembuh').val("invalid");

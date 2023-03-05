@@ -2,41 +2,43 @@
 include '../aksi/koneksi.php';
 ?>
 <!DOCTYPE html>
-<html lang = 'en'>
+<html lang='en'>
+
 <head>
-<meta charset = 'utf-8'>
-<meta http-equiv = 'X-UA-Compatible' content = 'IE=edge'>
-<meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
-<meta name = 'description' content = ''>
-<meta name = 'author' content = ''>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name='description' content=''>
+    <meta name='author' content=''>
 
-<title>Data Penderita Covid-19</title>
+    <title>Data Penderita Covid-19</title>
 
-<!-- Bootstrap Core CSS -->
-<link href = '../css/bootstrap.min.css' rel = 'stylesheet'>
+    <!-- Bootstrap Core CSS -->
+    <link href='../css/bootstrap.min.css' rel='stylesheet'>
 
-<!-- MetisMenu CSS -->
-<link href = '../css/metisMenu.min.css' rel = 'stylesheet'>
+    <!-- MetisMenu CSS -->
+    <link href='../css/metisMenu.min.css' rel='stylesheet'>
 
-<!-- Timeline CSS -->
-<link href = '../css/timeline.css' rel = 'stylesheet'>
+    <!-- Timeline CSS -->
+    <link href='../css/timeline.css' rel='stylesheet'>
 
-<!-- Custom CSS -->
-<link href = '../css/startmin.css' rel = 'stylesheet'>
+    <!-- Custom CSS -->
+    <link href='../css/startmin.css' rel='stylesheet'>
 
-<!-- Morris Charts CSS -->
-<link href = '../css/morris.css' rel = 'stylesheet'>
+    <!-- Morris Charts CSS -->
+    <link href='../css/morris.css' rel='stylesheet'>
 
-<!-- Custom Fonts -->
-<link href = '../css/font-awesome.min.css' rel = 'stylesheet' type = 'text/css'>
+    <!-- Custom Fonts -->
+    <link href='../css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+
 <body>
 
     <div id="wrapper">
@@ -123,22 +125,24 @@ include '../aksi/koneksi.php';
                                                 <th colspan="2">Action</th>
                                             </tr>
                                         </thead>
-                                        <?php 
-                                        
+                                        <?php
+
                                         $query1 = "SELECT * FROM marker";
-                                        $sql1 = mysqli_query($koneksi,$query1);
-                                        while ($row1= mysqli_fetch_array($sql1)) {
+                                        $sql1 = mysqli_query($koneksi, $query1);
+                                        $index = 1;
+                                        while ($row1 = mysqli_fetch_array($sql1)) {
                                             echo "<tr>
-                                            <td>".$row1['id_marker']."</td>
-                                            <td>".$row1['kecamatan']."</td>
-                                            <td>".$row1['longitude']."</td>
-                                            <td>".$row1['latitude']."</td>
+                                            <td>" . $index . "</td>
+                                            <td>" . $row1['kecamatan'] . "</td>
+                                            <td>" . $row1['longitude'] . "</td>
+                                            <td>" . $row1['latitude'] . "</td>
 
                                           
-                                            <td width> <a href='http://localhost/skripsi/aksi/proses_delete.php?id_marker=".$row1['id_marker']."' class = 'btn btn-danger'>Delete</a></td>
+                                            <td width> <a href='http://localhost/skripsi/aksi/proses_delete.php?id_marker=" . $row1['id_marker'] . "' class = 'btn btn-danger'>Delete</a></td>
                                             <td>
-                                            <a href='http://localhost/skripsi/pages/ubah_data_marker.php?id_marker=".$row1['id_marker']."' class = 'btn btn-warning'>Edit</a></td>
+                                            <a href='http://localhost/skripsi/pages/ubah_data_marker.php?id_marker=" . $row1['id_marker'] . "' class = 'btn btn-warning'>Edit</a></td>
 </td>";
+                                            $index++;
                                         }
                                         ?>
                                     </table>
@@ -172,4 +176,5 @@ include '../aksi/koneksi.php';
             <script src="../js/startmin.js"></script>
 
 </body>
+
 </html>

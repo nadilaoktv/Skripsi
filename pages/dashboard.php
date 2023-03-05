@@ -97,10 +97,10 @@ include '../aksi/koneksi.php'
 <a href = 'data_clusterawal.php'><i class = 'fa fa-area-chart' aria-hidden = 'true'></i> Pusat Cluster Awal</a>
 </li>
 <li>
-<a href = ''><i class = 'fa fa-area-chart' aria-hidden = 'true'></i> Perhitungan</a>
+<a href = 'data_perhitungan.php'><i class = 'fa fa-area-chart' aria-hidden = 'true'></i> Perhitungan</a>
 </li>
 <li>
-<a href = ''><i class = 'fa fa-table' aria-hidden = 'true'></i> Hasil Iterasi</a>
+<a href = 'data_iterasi.php?cluster=3&iterasi=1'><i class = 'fa fa-table' aria-hidden = 'true'></i> Hasil Iterasi</a>
 </li>
 <li>
 <a href = ''><i class = 'fa fa-table' aria-hidden = 'true'></i> Hasil Cluster</a>
