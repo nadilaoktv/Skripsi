@@ -1,5 +1,7 @@
 <?php
-include "../aksi/koneksi.php"
+include "../aksi/koneksi.php";
+
+$cluster = $_GET["cluster"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,36 +125,37 @@ include "../aksi/koneksi.php"
                                 Data Lokasi
                             </div>
                             <div class="panel-body">
-                                <form method="post" action="../aksi/act_tambahcluster.php" enctype="multipart/form-data">
+                                <form method="post" action="../aksi/act_tambah_cluster_awal.php" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
+                                                <input type="hidden" id="cluster" name="cluster" value="<?= $cluster ?>">
                                                 <label>Centroid <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" name="centroid" />
+                                                <input class="form-control" type="text" name="centroid"/>
                                             </div>
                                             <div class="form-group">
                                                 <label>Kecamatan<span class="text-danger">*</span></label>
                                                 <select class="form-control" type="text" name="kecamatan" id="kecamatan">
                                                     <option value="">---</option>
                                                     <?php
-                                                    $query = mysqli_query($koneksi, "SELECT * FROM marker") or die(mysqli_error($koneksi));
+                                                    $query = mysqli_query($koneksi, "SELECT covid.id_covid,marker.kecamatan FROM covid LEFT JOIN marker ON covid.id_marker=marker.id_marker") or die(mysqli_error($koneksi));
                                                     while ($data = mysqli_fetch_array($query)) {
-                                                        echo "<option value = $data[id_marker]> $data[kecamatan] </option>";
+                                                        echo "<option value = $data[id_covid]> $data[kecamatan] </option>";
                                                     }
                                                     ?>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Positif <span class="text-denger">*</span></label>
-                                                <input class="form-control" type="text" name="positif" id="positif" />
+                                                <input class="form-control" type="text" name="positif" id="positif" readonly />
                                             </div>
                                             <div class="form-group">
                                                 <label>Sembuh <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" name="sembuh" id="sembuh" />
+                                                <input class="form-control" type="text" name="sembuh" id="sembuh" readonly />
                                             </div>
                                             <div class="form-group">
                                                 <label>Meninggal <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text" name="meninggal" id="meninggal" />
+                                                <input class="form-control" type="text" name="meninggal" id="meninggal" readonly />
                                             </div>
                                             <div class="form-group">
                                                 <button class="btn btn-primary" id="submit" disabled><span class="glyphicon glyphicon-save"></span> Simpan</button>
@@ -207,7 +210,7 @@ include "../aksi/koneksi.php"
                     $('#positif').val("");
                     $('#sembuh').val("");
                     $('#meninggal').val("");
-                    $('#submit').attr('disabled',true);
+                    $('#submit').attr('disabled', true);
                 } else {
                     $.ajax({
                         url: '../aksi/get_data_cluster.php',

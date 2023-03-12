@@ -1,8 +1,13 @@
 <?php
 include '../aksi/koneksi.php';
 
-$cluster = $_GET['cluster'];
-$iterasi = $_GET['iterasi'];
+$cluster = null;
+$iterasi = null;
+if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
+    $cluster = $_GET['cluster'];
+    $iterasi = $_GET['iterasi'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -108,6 +113,14 @@ $iterasi = $_GET['iterasi'];
                             <label for="cluster">Jumlah Cluster:</label>
                             <select name="cluster" id="cluster">
                                 <option value="">---</option>
+                                <?php
+                                // $query1 = "SELECT DISTINCT `jumlah_cluster` FROM `iterasi`";
+                                // $sql1 = mysqli_query($koneksi, $query1);
+                                // $row1 = mysqli_fetch_all($sql1);
+                                // for ($i = 0; $i < count($row1); $i++) {
+                                //     echo " <option value="3">3</option>";
+                                // }
+                                ?>
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
@@ -135,11 +148,12 @@ $iterasi = $_GET['iterasi'];
                                 <div class="table-responsive">
                                     <?php
                                     if ($cluster) {
-                                        $query1 = "SELECT centroid.Pusat_C1,centroid.Pusat_C2,centroid.Pusat_C3 FROM centroid LEFT JOIN iterasi ON centroid.id_iterasi=iterasi.id_iterasi where iterasi.iterasi= " . $iterasi . " and iterasi.jumlah_cluster = " . $cluster;
+                                        $query1 = "SELECT centroid.Pusat_C1,centroid.Pusat_C2,centroid.Pusat_C3 FROM centroid LEFT JOIN iterasi ON centroid.id_iterasi=iterasi.id_iterasi LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster  where iterasi.iterasi= " . $iterasi . " and tb_jumlah_cluster.jumlah_cluster = " . $cluster;
                                         $sql1 = mysqli_query($koneksi, $query1);
                                         $row1 = mysqli_fetch_all($sql1);
                                         for ($i = 0; $i < count($row1); $i++) {
-                                            echo "<p>Pusat Cluster " . $i + 1 . " :" . $row1[$i][0] . "," . $row1[$i][1] . "," . $row1[$i][2] . "  </p>";
+                                            $j = $i + 1;
+                                            echo "<p>Pusat Cluster " . $j . " :" . $row1[$i][0] . "," . $row1[$i][1] . "," . $row1[$i][2] . "  </p>";
                                         }
                                     }
                                     ?>
@@ -174,7 +188,7 @@ $iterasi = $_GET['iterasi'];
                                         <?php
                                         $no = 1;
                                         if ($cluster == 3) {
-                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.Hasil FROM `cluster_3` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker WHERE iterasi.iterasi = " . $iterasi . " AND iterasi.jumlah_cluster = " . $cluster;
+                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.Hasil FROM `cluster_3` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
                                             $sql1 = mysqli_query($koneksi, $query1);
                                             while ($row1 = mysqli_fetch_array($sql1)) {
                                                 echo "<tr><td>" . $no++ . "</td>
@@ -185,7 +199,7 @@ $iterasi = $_GET['iterasi'];
                                                 <td>" . $row1['Hasil'] . "</td>";
                                             }
                                         } elseif ($cluster == 4) {
-                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.Hasil FROM `cluster_4` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker WHERE iterasi.iterasi = " . $iterasi . " AND iterasi.jumlah_cluster = " . $cluster;
+                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.Hasil FROM `cluster_4` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
                                             $sql1 = mysqli_query($koneksi, $query1);
                                             while ($row1 = mysqli_fetch_array($sql1)) {
                                                 echo "<tr><td>" . $no++ . "</td>
@@ -197,7 +211,7 @@ $iterasi = $_GET['iterasi'];
                                                 <td>" . $row1['Hasil'] . "</td>";
                                             }
                                         } elseif ($cluster == 5) {
-                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.C5,cluster.Hasil FROM `cluster_5` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker WHERE iterasi.iterasi = " . $iterasi . " AND iterasi.jumlah_cluster = " . $cluster;
+                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.C5,cluster.Hasil FROM `cluster_5` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
                                             $sql1 = mysqli_query($koneksi, $query1);
                                             while ($row1 = mysqli_fetch_array($sql1)) {
                                                 echo "<tr><td>" . $no++ . "</td>
