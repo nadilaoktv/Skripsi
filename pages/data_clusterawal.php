@@ -122,6 +122,7 @@ include '../aksi/koneksi.php';
                                 <div class="panel-body">
                                     <div class="table-responsive">
                                         <?php
+                                        print_r($row[0]);
                                         $query1 = "SELECT centroid_awal.no_centroid,marker.kecamatan,covid.positif,covid.sembuh,covid.meninggal FROM `centroid_awal` LEFT JOIN covid ON centroid_awal.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON centroid_awal.id_jumlah_cluster=tb_jumlah_cluster.id WHERE id_jumlah_cluster=" . $row[0]." ORDER BY centroid_awal.no_centroid ASC";
                                         $sql1 = mysqli_query($koneksi, $query1);
                                         $row1 = mysqli_fetch_all($sql1);

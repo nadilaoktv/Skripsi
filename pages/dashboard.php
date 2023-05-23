@@ -222,7 +222,7 @@ $row = mysqli_fetch_array( $sql );
 </div>
 <div class = 'col-xs-9 text-right'>
 <?php
-$query = 'SELECT COUNT( * ) FROM cluster';
+$query = 'SELECT COUNT( * ) FROM tb_jumlah_cluster';
 $sql = mysqli_query( $koneksi, $query );
 $row = mysqli_fetch_array( $sql );
 

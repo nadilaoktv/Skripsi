@@ -58,15 +58,27 @@
   <div style="text-align:center;padding: 10px; background-color: lightblue; font-family: 'Exo 2', sans-serif;">
     <?php include "aksi/koneksi.php";?>
     <h1>PEMETAAN PENDERITA COVID-19 </h1>
-    <h4>KABUPATEN BERAU</h4>
+    <h4>PROVINSI KALIMANTAN TIMUR</h4>
   </div>
 </br>
-
+<a href=""></a>
 <div id="map" style="height: 580px; width: 100%;margin-top: -23px; float: all;"></div>
 
 <?php 
-$query = "SELECT * FROM marker";
-$sql= mysqli_query($koneksi, $query);
+$jumlah_data = 0;
+$data =[];
+for ($i=1; $i < 4; $i++) { 
+  $query = "SELECT centroid_awal.no_centroid,marker.kecamatan,marker.longitude,marker.latitude,covid.positif,covid.sembuh,covid.meninggal, centroid_awal.id_covid, marker.id_marker FROM `centroid_awal` LEFT JOIN covid ON centroid_awal.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON centroid_awal.id_jumlah_cluster=tb_jumlah_cluster.id WHERE id_jumlah_cluster=" . $i." ORDER BY centroid_awal.no_centroid ASC";
+  $sql= mysqli_query($koneksi, $query);
+  $row1 = mysqli_fetch_all($sql);
+  foreach ($row1 as $key => $arr) {
+    $data[$jumlah_data] = $row1;
+  }
+  $jumlah_data++;
+}
+    // foreach ($data as $value) {
+    //   print count($value);
+    // }
 ?>
 
 <script>
@@ -75,20 +87,39 @@ $sql= mysqli_query($koneksi, $query);
   var geojson = {
     'type': 'FeatureCollection',
     'features': [
-    <?php while ($row = $sql->fetch_array()){ 
-      echo'{
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": ['.$row['longitude'].','.$row['latitude'].']
-        },
-        "properties": {
-          "Kecamatan": "'.$row['kecamatan'].'",
-          "title": "'.$row['longitude'].'",
-          "description": "'.$row['latitude'].'",
-        }
-      },';
+    <?php 
+    foreach ($data as $row) {
+      foreach ($row as $value) {
+        echo'{
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": ['.$value[2].','.$value[3].']
+          },
+          "properties": {
+            "Kecamatan": "'.$value[1].'",
+            "title": "'.$value[1].'",
+            "description": "'.$value[1].'",
+            "id_marker": "'.$value[8].'"
+          }
+        },';
+      }
     }
+
+    // while ($row = $sql->fetch_array()){ 
+    //   echo'{
+    //     "type": "Feature",
+    //     "geometry": {
+    //       "type": "Point",
+    //       "coordinates": ['.$row['longitude'].','.$row['latitude'].']
+    //     },
+    //     "properties": {
+    //       "Kecamatan": "'.$row['kecamatan'].'",
+    //       "title": "'.$row['longitude'].'",
+    //       "description": "'.$row['latitude'].'",
+    //     }
+    //   },';
+    // }
     ?>
     ]
   };
@@ -107,6 +138,7 @@ $sql= mysqli_query($koneksi, $query);
         // create a HTML element for each feature
         var el = document.createElement('div');
         el.className = 'marker';
+        var id_marker = '</p><a href="http://localhost/skripsi/pages/data_iterasi.php?cluster=3&iterasi=1&id_marker=' + marker.properties.id_marker
 
         // make a marker for each feature and add it to the map
         new mapboxgl.Marker(el)
@@ -118,9 +150,7 @@ $sql= mysqli_query($koneksi, $query);
               marker.properties.title +
               '</h6><p>' +
               marker.properties.description + 
-              '</p><a href="http://localhost/skripsi/pages/detail_data.php?id='
-              +marker.properties.id+
-              '">Detail</a></td>'
+              id_marker + '">Detail</a></td>'
               )
             )
         .addTo(map);

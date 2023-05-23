@@ -3,9 +3,12 @@ include '../aksi/koneksi.php';
 
 $cluster = null;
 $iterasi = null;
+$id_marker = null;
 if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
     $cluster = $_GET['cluster'];
     $iterasi = $_GET['iterasi'];
+    $id_marker = $_GET['id_marker'];
+    // $id_marker = isset($_GET['id_marker']) ? $_GET['id_marker'] : null;
 }
 
 ?>
@@ -129,6 +132,7 @@ if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
                             <select name="iterasi" id="iterasi">
                                 <option value="">---</option>
                             </select>
+                            <input type="hidden" id="id_marker" name="id_marker" value="<?php echo $id_marker; ?>">
                             <button class='btn btn-success' style="margin-bottom: 10px;" id="submit" disabled>Pilih Data</button>
                         </form>
                     </div>
@@ -148,7 +152,13 @@ if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
                                 <div class="table-responsive">
                                     <?php
                                     if ($cluster) {
-                                        $query1 = "SELECT centroid.Pusat_C1,centroid.Pusat_C2,centroid.Pusat_C3 FROM centroid LEFT JOIN iterasi ON centroid.id_iterasi=iterasi.id_iterasi LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster  where iterasi.iterasi= " . $iterasi . " and tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                        if($id_marker!=null){
+                                            $query1 = "SELECT centroid.Pusat_C1,centroid.Pusat_C2,centroid.Pusat_C3 FROM centroid LEFT JOIN iterasi ON centroid.id_iterasi=iterasi.id_iterasi LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster  where iterasi.iterasi= " . $iterasi . " and tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                        
+                                        } else {
+                                            $query1 = "SELECT centroid.Pusat_C1,centroid.Pusat_C2,centroid.Pusat_C3 FROM centroid LEFT JOIN iterasi ON centroid.id_iterasi=iterasi.id_iterasi LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster  where iterasi.iterasi= " . $iterasi;
+                                        
+                                        }
                                         $sql1 = mysqli_query($koneksi, $query1);
                                         $row1 = mysqli_fetch_all($sql1);
                                         for ($i = 0; $i < count($row1); $i++) {
@@ -188,7 +198,11 @@ if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
                                         <?php
                                         $no = 1;
                                         if ($cluster == 3) {
-                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.Hasil FROM `cluster_3` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                            if($id_marker!=null){
+                                                $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.Hasil FROM `cluster_3` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster . " AND covid.id_marker=".$id_marker;
+                                            } else {
+                                                $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.Hasil FROM `cluster_3` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                            }
                                             $sql1 = mysqli_query($koneksi, $query1);
                                             while ($row1 = mysqli_fetch_array($sql1)) {
                                                 echo "<tr><td>" . $no++ . "</td>
@@ -199,7 +213,11 @@ if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
                                                 <td>" . $row1['Hasil'] . "</td>";
                                             }
                                         } elseif ($cluster == 4) {
-                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.Hasil FROM `cluster_4` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                            if($id_marker!=null){
+                                                $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.Hasil FROM `cluster_4` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster . " AND covid.id_marker=".$id_marker;
+                                            } else {
+                                                $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.Hasil FROM `cluster_4` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                            }
                                             $sql1 = mysqli_query($koneksi, $query1);
                                             while ($row1 = mysqli_fetch_array($sql1)) {
                                                 echo "<tr><td>" . $no++ . "</td>
@@ -211,7 +229,12 @@ if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
                                                 <td>" . $row1['Hasil'] . "</td>";
                                             }
                                         } elseif ($cluster == 5) {
-                                            $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.C5,cluster.Hasil FROM `cluster_5` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                            if($id_marker!=null) {
+                                                $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.Hasil FROM `cluster_4` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster. " AND covid.id_marker=".$id_marker;
+                                            } else {
+                                                $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.C5,cluster.Hasil FROM `cluster_5` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster;
+                                            }
+                                            // $query1 = "SELECT marker.kecamatan, cluster.C1,cluster.C2,cluster.C3,cluster.C4,cluster.C5,cluster.Hasil FROM `cluster_5` AS cluster LEFT JOIN iterasi ON cluster.id_iterasi = iterasi.id_iterasi LEFT JOIN covid ON cluster.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON tb_jumlah_cluster.id=iterasi.id_jumlah_cluster WHERE iterasi.iterasi = " . $iterasi . " AND tb_jumlah_cluster.jumlah_cluster = " . $cluster. " AND covid.id_marker=".$id_marker;
                                             $sql1 = mysqli_query($koneksi, $query1);
                                             while ($row1 = mysqli_fetch_array($sql1)) {
                                                 echo "<tr><td>" . $no++ . "</td>
@@ -244,6 +267,7 @@ if (isset($_GET['cluster']) && isset($_GET['iterasi'])) {
                 $(document).ready(function() {
                     $('#cluster').change(function() {
                         var cluster = $(this).val();
+                        console.log('-----------',cluster)
                         if (cluster == "") {
                             $('#iterasi').val("");
                             $('#submit').attr('disabled', true);
