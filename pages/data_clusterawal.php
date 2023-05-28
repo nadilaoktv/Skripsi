@@ -123,7 +123,7 @@ include '../aksi/koneksi.php';
                                     <div class="table-responsive">
                                         <?php
                                         print_r($row[0]);
-                                        $query1 = "SELECT centroid_awal.no_centroid,marker.kecamatan,covid.positif,covid.sembuh,covid.meninggal FROM `centroid_awal` LEFT JOIN covid ON centroid_awal.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON centroid_awal.id_jumlah_cluster=tb_jumlah_cluster.id WHERE id_jumlah_cluster=" . $row[0]." ORDER BY centroid_awal.no_centroid ASC";
+                                        $query1 = "SELECT centroid_awal.no_centroid,marker.kecamatan,covid.positif,covid.sembuh,covid.meninggal, centroid_awal.id as id_centroidawal FROM `centroid_awal` LEFT JOIN covid ON centroid_awal.id_covid=covid.id_covid LEFT JOIN marker ON covid.id_marker=marker.id_marker LEFT JOIN tb_jumlah_cluster ON centroid_awal.id_jumlah_cluster=tb_jumlah_cluster.id WHERE id_jumlah_cluster=" . $row[0]." ORDER BY centroid_awal.no_centroid ASC";
                                         $sql1 = mysqli_query($koneksi, $query1);
                                         $row1 = mysqli_fetch_all($sql1);
                                         if (count($row1) < $row[1]) {
@@ -150,7 +150,7 @@ include '../aksi/koneksi.php';
                                                     <td>" . $value[2] . "</td>
                                                     <td>" . $value[3] . "</td>
                                                     <td>" . $value[4] . "</td>
-                                                    <td width> <a href='../aksi/proses_delete.php?id_del = ' class='btn btn-danger'>Delete</a></td>
+                                                    <td width> <a href='../aksi/proses_deleteclusterawal.php?id_clusterawal=".$value[5]." ' class='btn btn-danger'>Delete</a></td>
                                                     <td>
                                                     <a href='ubah_data_marker.php?id_edit =' class='btn btn-warning'>Edit</a></td></td>";
                                             }

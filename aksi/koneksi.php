@@ -2,7 +2,7 @@
 $host = 'localhost'; // Nama hostnya
 $username = 'root'; // Username
 $password = ''; // Password (Isi jika menggunakan password)
-$database = 'skripsi'; // Nama databasenya
+$database = 'tugas_akhir'; // Nama databasenya
 $base_url = 'http://localhost/skripsi/'; // Set Base Url Web
 
 // Koneksi ke MySQL dengan PDO
