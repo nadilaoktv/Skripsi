@@ -93,14 +93,26 @@
 
   <?php
   // select id iterasi terakhir dari jumlah cluster
-  $query1 = "SELECT * FROM `iterasi` WHERE id_jumlah_cluster = ".$id_cluster." ORDER BY id_iterasi DESC LIMIT 1";
+  $query1 = "SELECT * FROM `iterasi` WHERE id_jumlah_cluster = " . $id_cluster . " ORDER BY id_iterasi DESC LIMIT 1";
   $sql1 = mysqli_query($koneksi, $query1);
   $row1 = mysqli_fetch_row($sql1);
 
   // select by id terasi terakhir dari tabel yang sesuai dengan jumlah cluster dan datanya dari tabel covid dangan nama dari tabel marker
-  $query2 = "SELECT * FROM `cluster_3` as cluster LEFT JOIN covid ON cluster.id_covid = covid.id_covid LEFT JOIN marker ON covid.id_marker = marker.id_marker WHERE cluster.id_iterasi = ".$row1[0]." ORDER BY cluster.`Hasil` ASC";
-  $sql2 = mysqli_query($koneksi, $query2);
-  $row2 = mysqli_fetch_all($sql2);
+  if ($id_cluster == 1) {
+    $query2 = "SELECT marker.id_marker,marker.kecamatan,marker.latitude,marker.longitude,covid.positif,covid.sembuh,covid.meninggal,cluster.Hasil FROM `cluster_3` as cluster LEFT JOIN covid ON cluster.id_covid = covid.id_covid LEFT JOIN marker ON covid.id_marker = marker.id_marker WHERE cluster.id_iterasi = " . $row1[0] . " ORDER BY cluster.`Hasil` ASC";
+    $sql2 = mysqli_query($koneksi, $query2);
+    $row2 = mysqli_fetch_all($sql2);
+  } elseif ($id_cluster == 2) {
+    $query2 = "SELECT marker.id_marker,marker.kecamatan,marker.latitude,marker.longitude,covid.positif,covid.sembuh,covid.meninggal,cluster.Hasil FROM `cluster_4` as cluster LEFT JOIN covid ON cluster.id_covid = covid.id_covid LEFT JOIN marker ON covid.id_marker = marker.id_marker WHERE cluster.id_iterasi = " . $row1[0] . " ORDER BY cluster.`Hasil` ASC";
+    $sql2 = mysqli_query($koneksi, $query2);
+    $row2 = mysqli_fetch_all($sql2);
+  } elseif ($id_cluster == 3) {
+    $query2 = "SELECT marker.id_marker,marker.kecamatan,marker.latitude,marker.longitude,covid.positif,covid.sembuh,covid.meninggal,cluster.Hasil FROM `cluster_3` as cluster LEFT JOIN covid ON cluster.id_covid = covid.id_covid LEFT JOIN marker ON covid.id_marker = marker.id_marker WHERE cluster.id_iterasi = " . $row1[0] . " ORDER BY cluster.`Hasil` ASC";
+    $sql2 = mysqli_query($koneksi, $query2);
+    $row2 = mysqli_fetch_all($sql2);
+  }
+  // print_r($row2);
+
 
   ?>
   <script src="js/jquery.min.js"></script>
@@ -118,23 +130,23 @@
       'features': [
         <?php
         foreach ($row2 as $value) {
-          $kasus = $value[9] + $value[10] + $value[11];
+          $kasus = $value[4] + $value[5] + $value[6];
           echo '{
           "type": "Feature",
           "geometry": {
             "type": "Point",
-            "coordinates": [' . $value[15] . ',' . $value[14] . ']
+            "coordinates": [' . $value[3] . ',' . $value[2] . ']
           },
           "properties": {
-            "Kecamatan": "' . $value[13] . '",
-            "title": "' . $value[13] . '",
-            "description": "' . $value[13] . '",
-            "id_marker": "' . $value[12] . '",
+            "Kecamatan": "' . $value[1] . '",
+            "title": "' . $value[1] . '",
+            "description": "' . $value[1] . '",
+            "id_marker": "' . $value[0] . '",
             "jumlah kasus": "' . $kasus . '",
-            "positif": "' . $value[9] . '",
-            "sembuh": "' . $value[10] . '",
-            "meninggal": "' . $value[11] . '",
-            "cluster": "' . $value[6] . '",
+            "positif": "' . $value[4] . '",
+            "sembuh": "' . $value[5] . '",
+            "meninggal": "' . $value[6] . '",
+            "cluster": "' . $value[7] . '",
           }
         },';
         }
